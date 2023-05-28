@@ -1,0 +1,51 @@
+version: '0.1'
+services:
+  auth-db:
+    container_name: auth-db
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - auth-db:/var/lib/postgresql/data
+  locs-db:
+    container_name: locs-db
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - locs-db:/var/lib/postgresql/data
+  auth-api:
+    container_name: auth-api
+    image: escritura-auth
+    depends_on: [locs-db]
+    ports:
+      - '8080:8080'
+    environment:
+      ENV : envvar
+  locs-api:
+    container_name: locs-api
+    image: escritura-locs
+    depends_on: [escritura-auth]
+    ports:
+      - '8081:8081'
+    environment:
+      ENV : envvar
+  email-api:
+    container_name: email-api
+    image: escritura-email
+    depends_on: [escritura-auth]
+    environment:
+      ENV : envvar
+volumes:
+  auth-db:
+    driver: local
+  locs-db:
+    driver: local
