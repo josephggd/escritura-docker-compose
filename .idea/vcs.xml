@@ -2,5 +2,9 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/escritura-android" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/escritura-springboot-auth" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/escritura-springboot-email" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/escritura-springboot-locs" vcs="Git" />
   </component>
 </project>
