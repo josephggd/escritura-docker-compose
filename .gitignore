@@ -12,3 +12,6 @@ escritura.txt
 /escritura-docker-compose/.idea/modules.xml
 /escritura-docker-compose/.idea/vcs.xml
 /escritura-docker-compose/.idea/workspace.xml
+.env
+**.env**
+./.env
