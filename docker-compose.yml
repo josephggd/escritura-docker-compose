@@ -4,8 +4,7 @@ services:
     image: rabbitmq:management
     container_name: rabbitmq
     environment:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
+      ENV: 'ENV'
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -14,8 +13,7 @@ services:
     image: postgres:14.1-alpine
     restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      ENV: 'ENV'
     ports:
       - '5432:5432'
     volumes:
@@ -25,8 +23,7 @@ services:
     image: postgres:14.1-alpine
     restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      ENV: 'ENV'
     ports:
       - '5432:5432'
     volumes:
@@ -34,33 +31,127 @@ services:
   auth-api:
     build:
       context: ./
-      dockerfile: ./dev.auth.Dockerfile
+      dockerfile: ./staging.auth.Dockerfile
     container_name: auth-api
-    depends_on: [auth-db]
+    depends_on: [auth-db, rabbitmq]
     ports:
+      - "5672:5672"
       - '8080:8080'
     environment:
-      profile : dev
+      ENV: 'ENV'
+
   locs-api:
     build:
       context: ./
-      dockerfile: ./dev.locs.Dockerfile
+      dockerfile: ./staging.locs.Dockerfile
     container_name: locs-api
     depends_on: [auth-api]
     ports:
       - '8081:8081'
     environment:
-      ENV : envvar
+      ENV: 'ENV'
   email-api:
     build:
       context: ./
-      dockerfile: ./dev.email.Dockerfile
+      dockerfile: ./staging.email.Dockerfile
     container_name: email-api
-    depends_on: [rabbitmq, auth-api]
+    depends_on: [rabbitmq]
     environment:
-      ENV : envvar
-volumes:
-  auth-db:
-    driver: local
-  locs-db:
-    driver: local
+      ENV: 'ENV'
+    ports:
+      - "543:543"
+      - "5672:5672"
+
+secrets:
+  RABBITMQ_DEFAULT_USER:
+    file: .env
+  RABBITMQ_DEFAULT_PASS:
+    file: .env
+
+  AUTH_PG_HOST:
+    file: .env
+  AUTH_PG_PORT:
+    file: .env
+  AUTH_PG_DATABASE:
+    file: .env
+  AUTH_PG_USER:
+    file: .env
+  AUTH_PG_PW:
+    file: .env
+
+
+  LOCS_PG_HOST:
+    file: .env
+  LOCS_PG_PORT:
+    file: .env
+  LOCS_PG_DATABASE:
+    file: .env
+  LOCS_PG_USER:
+    file: .env
+  LOCS_PG_PW:
+    file: .env
+
+  AUTH_SPRING_USERNAME:
+    file: .env
+  AUTH_SPRING_PASSWORD:
+    file: .env
+  AUTH_PLATFORM_CODE:
+    file: .env
+  AUTH_LINK_CODE:
+    file: .env
+  AUTH_PW_CODE:
+    file: .env
+  AUTH_DATABASE_DRIVER:
+    file: .env
+  AUTH_DATABASE_PLATFORM:
+    file: .env
+  AUTH_MQ_QUEUE:
+    file: .env
+  AUTH_MQ_TOPIC:
+    file: .env
+  AUTH_MQ_VIRTUAL_HOST:
+    file: .env
+  AUTH_MQ_HOST:
+    file: .env
+  AUTH_MQ_USERNAME:
+    file: .env
+  AUTH_MQ_PASSWORD:
+    file: .env
+
+  LOCS_SPRING_USERNAME:
+    file: .env
+  LOCS_SPRING_PASSWORD:
+    file: .env
+  LOCS_PLATFORM_CODE:
+    file: .env
+  LOCS_LINK_CODE:
+    file: .env
+  LOCS_PW_CODE:
+    file: .env
+  LOCS_DATABASE_DRIVER:
+    file: .env
+  LOCS_DATABASE_PLATFORM:
+    file: .env
+
+  MQ_QUEUE:
+    file: .env
+  MQ_TOPIC:
+    file: .env
+  MQ_VIRTUAL_HOST:
+    file: .env
+  MQ_HOST:
+    file: .env
+  MQ_USERNAME:
+    file: .env
+  MQ_PASSWORD:
+    file: .env
+
+  EMAIL_HOST:
+    file: .env
+  EMAIL_PW:
+    file: .env
+  EMAIL_PORT:
+    file: .env
+  EMAIL_EMAIL:
+    file: .env
+
