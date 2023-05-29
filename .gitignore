@@ -1,0 +1,14 @@
+**escritura-springboot-**
+escritura-springboot-android
+escritura.txt
+/backend/
+/escritura-android/
+/escritura-springboot-auth/
+/escritura-springboot-email/
+/escritura-springboot-locs/
+/escritura-docker-compose/.idea/escritura-docker-compose.iml
+/escritura-docker-compose/.idea/jpa-buddy.xml
+/escritura-docker-compose/.idea/misc.xml
+/escritura-docker-compose/.idea/modules.xml
+/escritura-docker-compose/.idea/vcs.xml
+/escritura-docker-compose/.idea/workspace.xml

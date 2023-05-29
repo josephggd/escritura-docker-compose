@@ -1,4 +1,4 @@
-version: '0.1'
+version: '2.2'
 services:
   auth-db:
     container_name: auth-db
@@ -23,6 +23,9 @@ services:
     volumes:
       - locs-db:/var/lib/postgresql/data
   auth-api:
+    build:
+      context: ./
+      dockerfile: ./auth.Dockerfile
     container_name: auth-api
     image: escritura-auth
     depends_on: [locs-db]
@@ -31,17 +34,23 @@ services:
     environment:
       ENV : envvar
   locs-api:
+    build:
+      context: ./
+      dockerfile: ./locs.Dockerfile
     container_name: locs-api
     image: escritura-locs
-    depends_on: [escritura-auth]
+    depends_on: [auth-api]
     ports:
       - '8081:8081'
     environment:
       ENV : envvar
   email-api:
+    build:
+      context: ./
+      dockerfile: ./email.Dockerfile
     container_name: email-api
     image: escritura-email
-    depends_on: [escritura-auth]
+    depends_on: [auth-api]
     environment:
       ENV : envvar
 volumes:
